@@ -25,14 +25,19 @@ class BroadcastReceiver {
   ///
   /// At least one name needs to be provided.
   BroadcastReceiver({required this.names})
-      : assert(names.length > 0),
-        _id = ++_index;
+    : assert(names.length > 0),
+      _id = ++_index;
 
   /// Returns true, if this [BroadcastReceiver] is currently listening for messages.
   bool get isListening => _subscription != null;
 
   /// A stream of matching messages received from the native platform.
   Stream<BroadcastMessage> get messages => _messages.stream;
+
+  /// Stops listening on all [BroadcastReceiver]s.
+  static Future<void> stopAll() async {
+    await _BroadcastChannel.instance.stopAll();
+  }
 
   /// Starts listening for messages on this [BroadcastReceiver].
   ///

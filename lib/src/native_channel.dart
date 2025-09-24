@@ -78,4 +78,13 @@ class _BroadcastChannel {
       throw FlutterError(result);
     }
   }
+
+  /// Stops listening on all [BroadcastReceiver]s.
+  Future<void> stopAll() async {
+    final String? result = await _channel.invokeMethod('stopAll');
+
+    if (result != null) {
+      throw FlutterError(result);
+    }
+  }
 }

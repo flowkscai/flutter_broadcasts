@@ -79,6 +79,7 @@ class BroadcastManager(private val applicationContext: Context) {
 
     fun stopAll() {
         receivers.forEach { it.value.stop(applicationContext) }
+        receivers = mapOf()
     }
 }
 
@@ -133,6 +134,11 @@ class MethodCallHandlerImpl(
         }
     }
 
+    private fun onStopAll(call: MethodCall, result: Result) {
+        broadcastManager.stopAll()
+        result.success(null)
+    }
+
     private fun onSendBroadcast(call: MethodCall, result: Result) {
         withBroadcastArgs(call, result) { name, data ->
             Intent().also { intent ->
@@ -157,6 +163,9 @@ class MethodCallHandlerImpl(
             }
             "sendBroadcast" -> {
                 onSendBroadcast(call, result)
+            }
+            "stopAll" -> {
+                onStopAll(call, result)
             }
         }
     }
